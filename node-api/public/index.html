@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Remove Background + Smart Shadow</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+    .card {
+      width: 100%;
+      max-width: 960px;
+      background: #fff;
+      border-radius: 18px;
+      padding: 24px 28px 32px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    }
+    h1 {
+      margin: 0 0 4px;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+    input[type="file"] {
+      font-size: 13px;
+      padding: 6px 0;
+    }
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+      resize: vertical;
+    }
+    textarea:focus, input[type="file"]:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+    }
+    .field {
+      margin-bottom: 16px;
+    }
+    .hint {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 3px;
+    }
+    .actions {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-primary {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: #2563eb;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+    .btn-secondary {
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      border: 1px solid #d1d5db;
+      background: #fff;
+      cursor: pointer;
+    }
+    .btn-secondary:hover {
+      background: #f3f4f6;
+    }
+    .status {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 8px;
+    }
+    .status.error {
+      color: #b91c1c;
+    }
+    .gallery {
+      margin-top: 24px;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 18px;
+    }
+    .gallery-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .preview-card {
+      background: none;              /* bỏ nền xám của card */
+      box-shadow: none;
+      padding: 0;
+    }
+    .preview-card img {
+      width: 100%;
+      border-radius: 10px;
+      background: none !important;
+      object-fit: contain;
+    }
+    .preview-name {
+      font-size: 12px;
+      color: #4b5563;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .preview-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+
+    .preview-index {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    @media (max-width: 640px) {
+      .card {
+        padding: 18px 16px 24px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    .preview-bg-checker {
+    background-image:
+        linear-gradient(45deg, #f2f2f2 25%, transparent 25%),
+        linear-gradient(-45deg, #f2f2f2 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #f2f2f2 75%),
+        linear-gradient(-45deg, transparent 75%, #f2f2f2 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+    
+    padding: 24px;
+    border-radius: 16px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="card">
+    <h1>Remove Background + Smart Shadow</h1>
+    <div class="subtitle">
+      Upload 1 hoặc nhiều ảnh (PNG/JPG). Backend xử lý rồi trả kết quả để preview và tải về.
+    </div>
+
+    <form id="uploadForm">
+      <div class="field">
+        <label for="fileInput">Ảnh sản phẩm</label>
+        <input id="fileInput" name="file" type="file" accept="image/*" multiple />
+        <div class="hint">Bạn có thể chọn nhiều ảnh cùng lúc.</div>
+      </div>
+
+<div class="form-row" style="margin-bottom: 8px;">
+  <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px;">
+    <input type="checkbox" id="shadow-toggle" checked />
+    <span>Bật smart shadow</span>
+  </label>
+</div>
+
+
+      <div class="field">
+        <label for="options-input">Options (JSON) – có thể để trống</label>
+        <textarea
+          id="options-input"
+          rows="3"
+          placeholder='Ví dụ: {"shadow": {"enabled": false}, "orientation": "lying"} (tùy chọn nâng cao)'
+        ></textarea>
+        <div class="hint">Tạm thời backend chưa dùng nhiều options, để trống cũng được.</div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn-primary">
+          <span>Process image(s)</span>
+        </button>
+        <span id="status" class="status">Chưa xử lý.</span>
+      </div>
+    </form>
+
+    <div class="gallery" id="gallery" style="display: none;">
+      <div class="gallery-title">
+        Kết quả preview
+        <button id="downloadAllBtn" type="button" class="btn-secondary" style="margin-left: 12px; font-size: 12px;">
+          Download all
+        </button>
+      </div>
+      <div id="previewGrid" class="preview-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- JSZip from CDN for zipping all results without build step -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script src="/app.js"></script>
+
+</body>
+</html>
